@@ -1,1 +1,8 @@
-{ "dependencies": { "wrangler": "^3.72.3" } }
+{
+    "dependencies": {
+        "wrangler": "^3.72.3"
+    },
+    "scripts": {
+        "publish": "wrangler pages deploy --project-name=ev-demo --branch=main --commit-dirty=true ./public"
+    }
+}
