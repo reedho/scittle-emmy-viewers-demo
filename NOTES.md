@@ -22,5 +22,9 @@ bun install
 bunx --bun vite
 # or call npm script specified in package.json
 bun run --bun dev
-
 ```
+
+## Vite
+
+Note: Use `vite_public` as vite `publicDir` for now.
+
