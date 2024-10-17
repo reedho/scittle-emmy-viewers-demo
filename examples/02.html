@@ -1,0 +1,44 @@
+{{> example_page__top }}
+
+<div id="app">please wait...</div>
+
+<script type="application/x-scittle">
+  (ns hello
+  (:require [clojure.pprint :refer [pprint]])
+  (:refer-clojure
+   :exclude [+ - * / zero? compare divide numerator denominator
+             infinite? abs ref partial =])
+  (:require
+   [emmy.env :as e :refer [+ - * / zero? compare divide numerator denominator
+                           infinite? abs ref partial =
+                           ->infix ->TeX
+                           square sin cos asin D cube simplify
+                           literal-function Lagrange-equations up]]
+   [emmy.viewer :as ev]
+   [emmy.mafs :as mafs]
+   [mathbox.core :as mathbox]
+   [mathbox.primitives :as mb]
+   [emmy.mathbox.plot :as plot]
+   [reagent.core :as r]
+   [reagent.dom :as rdom])
+  )
+
+  (defn ->f
+    [body]
+    (eval (list 'fn [] body)))
+
+  (defn component []
+    (let [scene (plot/scene
+                 (plot/of-x {:z sin})
+                 (plot/parametric-curve
+                  {:f (up sin cos (/ identity 3))
+                   :t [-10 10]
+                   :color :green}))]
+      [:div
+       [:h3 "Example 3D Plot"]
+       [->f scene]]))
+
+  (js/__RENDER component)
+</script>
+
+{{> example_page__bottom }}

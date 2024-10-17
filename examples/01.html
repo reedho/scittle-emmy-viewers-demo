@@ -1,0 +1,45 @@
+{{> example_page__top }}
+
+<div id="app">please wait...</div>
+
+<script type="application/x-scittle">
+  (ns hello
+  (:require [clojure.pprint :refer [pprint]])
+  (:refer-clojure
+   :exclude [+ - * / zero? compare divide numerator denominator
+             infinite? abs ref partial =])
+  (:require
+   [emmy.env :as e :refer [+ - * / zero? compare divide numerator denominator
+                           infinite? abs ref partial =
+                           ->infix ->TeX
+                           square sin cos asin D cube simplify
+                           literal-function Lagrange-equations up]]
+   [emmy.viewer :as ev]
+   [emmy.mafs :as mafs]
+   [mathbox.core :as mathbox]
+   [mathbox.primitives :as mb]
+   [emmy.mathbox.plot :as plot]
+   [reagent.core :as r]
+   [reagent.dom :as rdom])
+  )
+
+  (defn ->f [body]
+    (eval (list 'fn [] body)))
+
+  (defn component []
+    [:div
+     [:h3 "Example 2D Graph"]
+     [->f (mafs/mafs
+           {:height 300}
+           (mafs/cartesian)
+           ;;(mafs/vector [1 -3] {:color :red})
+           (mafs/of-x {:y (fn [x] (square x)) :color :green})
+           ;;(mafs/of-x {:y (fn [x] (cube x)) :color :blue})
+           (mafs/of-x {:y (fn [x] ((D square) x)) :color :blue})
+           ;;(mafs/of-x {:y (fn [x] (* 2 x)) :color :cyan})
+           (mafs/text "face" {:color :gold}))]])
+
+  (js/__RENDER component)
+</script>
+
+{{> example_page__bottom }}

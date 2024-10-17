@@ -1,8 +1,13 @@
 {:deps {io.github.babashka/http-server {:git/sha "e203166a020509d126149ff8046489857ce5c89f"}
-        org.babashka/cli {:mvn/version "0.2.23"}}
+        org.babashka/cli {:mvn/version "0.2.23"}
+        io.github.scittle/build {:local/root "build"}}
  :tasks
  {:requires ([babashka.cli :as cli])
   :init (def cli-opts (cli/parse-opts *command-line-args* {:coerce {:port :int :headers :edn}}))
+
+  shadow:watch {:doc "Development build. Starts webserver and watches for changes."
+                :task (build/build {:action "watch"
+                                    :args *command-line-args*})}
 
   serve {:doc "Serve static assets"
          :requires ([babashka.http-server :as server])
