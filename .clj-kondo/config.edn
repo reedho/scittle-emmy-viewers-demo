@@ -1,0 +1,5 @@
+{:lint-as {reagent.core/with-let clojure.core/let
+           emmy.viewer/with-let clojure.core/let}
+ :ignore [:clojure-lsp/unused-public-var
+          :unused-referred-var]
+ :config-in-comment {:linters {:unresolved-namespace {:level :off}}}}
