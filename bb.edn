@@ -1,7 +1,6 @@
 {:deps {io.github.babashka/http-server {:git/sha "e203166a020509d126149ff8046489857ce5c89f"}
         org.babashka/cli {:mvn/version "0.2.23"}
-        io.github.babashka/sci.nrepl {:mvn/version "0.0.2"}
-        io.github.scittle/build {:local/root "build"}}
+        io.github.babashka/sci.nrepl {:mvn/version "0.0.2"}}
  :tasks
  {:requires ([babashka.cli :as cli])
   :init (def cli-opts (cli/parse-opts *command-line-args* {:coerce {:port :int :headers :edn}}))
