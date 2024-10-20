@@ -8,7 +8,7 @@
    [emmy.env :as e :refer [+ - * / zero? compare divide numerator denominator
                            infinite? abs ref partial =
                            ->infix ->TeX
-                           square sin cos asin tanh
+                           square sin cos asin sinh cosh tanh expt
                            D cube simplify
                            literal-function Lagrange-equations up]]
    [emmy.viewer :as ev]
@@ -19,6 +19,7 @@
    [reagent.core :as r]
    [reagent.dom :as rdom])
   )
+
 
 (def viewer-name :emmy.scittle/reagent)
 
@@ -196,5 +197,60 @@
   (pprint (mafs/of-x {:x e/sin :color :blue}))
   (pprint (ev/expand (mafs/of-x {:x e/sin :color :blue})))
   (pprint (eval (ev/expand (mafs/of-x {:x e/sin :color :blue}))))
+
+  )
+
+
+
+(comment
+
+  ;; --- not work ---
+  (emmy.viewer/with-let [!phase [0 0]]
+    (let [shifted (emmy.viewer/with-params {:atom !phase :params [0]}
+                    (fn [shift]
+                      shift
+                      #_(((cube D) tanh) #_(- identity shift))))]
+      (emmy.mafs/mafs
+       {:height 400}
+       (emmy.mafs/cartesian)
+       (emmy.mafs/of-x shifted)
+       (emmy.mafs/inequality
+        {:y {:<= shifted :> cos} :color :blue})
+       (emmy.mafs/movable-point
+        {:atom !phase :constrain "horizontal"}))))
+
+
+  ;; OK
+  (emmy.viewer/with-let [!phase {:phase 0}]
+    (emmy.mathbox.plot/scene
+     (emmy.leva/controls
+      {:folder {:name "Intro Demo"}
+       :schema {:phase {:min -4 :max 4 :step 0.01}}
+       :atom !phase})
+     (emmy.mathbox.plot/of-y
+      {:z (ev/with-params {:atom !phase :params [:phase]}
+            (fn [shift]
+              (fn [y]
+                (* shift (sin (- y shift))))))
+
+       :color "LimeGreen"})
+     (emmy.mathbox.plot/of-xy
+      {:color "#3090FF"
+       :z (ev/with-params {:atom !phase :params [:phase]}
+            (fn [shift]
+              (fn [[x y]]
+                (+ (((cube D) tanh) x)
+                   (sin (- y shift))))))})))
+
+  (mafs/of-x sin {:color :blue})
+
+  (plot/scene
+   (plot/of-x {:z sin})
+   (plot/parametric-curve
+    {:f (up sin cos (/ identity 3))
+     :t [-10 10]
+     :color :green}))
+
+
 
   )

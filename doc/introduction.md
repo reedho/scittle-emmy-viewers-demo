@@ -89,5 +89,22 @@ TODO
 
 ## Emmy Viewer
 
-TODO
+`emmy.viewer/with-params`
 
+````
+Takes:
+
+  - A map of the form
+
+    ```clojure
+    {:atom <symbol representing a reagent.core/atom>
+     :params <sequence of keys from the dereferenced atom>}
+    ```
+
+  - a function `f` that takes `(count params)` parameters and returns a new
+    function
+
+  and returns an instance of [[ParamF]] that the various viewer plugins will
+  know how to interpret, based on where the return value of [[with-params]] is
+  being used.
+````
